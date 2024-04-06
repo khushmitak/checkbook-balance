@@ -131,3 +131,26 @@ ostream &operator<<(ostream &outs, const Money &amount) {
 int digits_to_int(char c) {
   return static_cast<int>(c) - static_cast<int>('0');
 }
+
+// Check Class
+class Check {
+public:
+  Check(); // default
+  Check(int checkNumber, long dollars, int cents, bool isCashed);
+  Check(int checkNumber, long dollars, bool isCashed);
+  int getNumber() const;           
+  Money getAmount() const;          
+  bool getIsCashed() const;           
+  void setNumber(int checkNumber);     
+  void setAmount(const Money &amount); 
+  void setIsCashed(bool isCashed);     
+  friend bool
+  operator<(const Check &lhs, const Check &rhs); 
+  friend istream &operator>>(istream &ins, Check &check);
+  friend ostream &operator<<(ostream &outs, const Check &check); 
+
+private:
+  int checkNumber;
+  Money amount;
+  bool isCashed;
+};
