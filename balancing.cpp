@@ -154,3 +154,51 @@ private:
   Money amount;
   bool isCashed;
 };
+
+// Check class begins
+Check::Check(int checkNumber, long dollars, int cents, bool isCashed)
+    : checkNumber(checkNumber), amount(Money(dollars, cents)),
+      isCashed(isCashed) {}
+
+Check::Check(int checkNumber, long dollars, bool isCashed)
+    : checkNumber(checkNumber), amount(Money(dollars)), isCashed(isCashed) {}
+
+Check::Check() : checkNumber(0), amount(Money()), isCashed(false) {}
+
+int Check::getNumber() const { return checkNumber; }
+
+Money Check::getAmount() const { return amount; }
+
+bool Check::getIsCashed() const { return isCashed; }
+
+void Check::setNumber(int checkNumber) { this->checkNumber = checkNumber; }
+
+void Check::setAmount(const Money &amount) { this->amount = amount; }
+
+void Check::setIsCashed(bool isCashed) { this->isCashed = isCashed; }
+
+bool operator<(const Check &lhs, const Check &rhs) {
+  return lhs.checkNumber < rhs.checkNumber;
+}
+
+istream &operator>>(istream &ins, Check &check) {
+  bool isCashed;
+  ins >> check.checkNumber >> check.amount >> isCashed;
+
+  if (isCashed == 1) {
+    check.isCashed = true;
+  } else if (isCashed == 0) {
+    check.isCashed = false;
+  } else {
+    cout << "Remember cashed = 1 and not cashed = 0, Try again!\n";
+    exit(1);
+  }
+  return ins;
+}
+
+ostream &operator<<(ostream &outs, const Check &check) {
+  outs << "Check number: " << check.checkNumber
+       << " with amount: " << check.amount << ' ';
+  return outs;
+}
+// check class ends
