@@ -202,3 +202,96 @@ ostream &operator<<(ostream &outs, const Check &check) {
   return outs;
 }
 // check class ends
+
+int main() {
+  int numOfChecks, numOfDeposits;
+  Money priorBalance, cashedAmount, unCashedAmount, depositAmount, bankBalance, customerBalance;
+  cout << "Please enter the check number, amount on the check(in the form "
+          "$##.##), and whether or not ";
+  cout << "the check has been cashed or not (by typing 1 for YES and 0 for "
+          "NO): \n";
+  cout << endl;
+  cout << "\t Example input: 12 for check number, $40.00 for amount and 1 for "
+          "cashed ";
+  cout << "(12 $40.00 1) \n";
+  cout << endl;
+  cout << "How many checks would you like to enter? \n";
+  cin >> numOfChecks;
+  cout << "Enter the check number, amount, and if it is cashed or not" << endl;
+  cout << "eg. '12 $549.00 1' or '9 $54.04 0'" << endl;
+  cout << "Every check information must be in separate lines: \n";
+
+  //Input the checks from the user
+  Check *checks = new Check[numOfChecks];
+  int count = 0;
+  while (count < numOfChecks) {
+    cin >> checks[count];
+    ++count;
+  }
+
+  //calculate sums
+  for(int i = 0; i < numOfChecks; ++i) {
+    if(checks[i].getIsCashed()) {
+      cashedAmount += checks[i].getAmount();
+    } else {
+      unCashedAmount += checks[i].getAmount();
+    }
+  }
+  cout << "The sum of the cashed checks is: " << cashedAmount << endl;
+  cout << "The sum of the un-cashed checks is: " << unCashedAmount << endl;
+  cout << endl;
+  
+  //Input the deposits from the user 
+  cout << "How many deposits would you like to enter? \n";
+  cin >> numOfDeposits;
+  cout << "Enter your deposit amounts in separate lines: (example format: "
+          "$40.00 or $44.44) \n";
+  Money *deposits = new Money[numOfDeposits];
+  int i = 0;
+  while (i < numOfDeposits) {
+    cin >> deposits[i];
+    ++i;
+  }
+
+  // Calculate deposits sum
+  for(int i = 0; i < numOfDeposits; ++i) {
+    depositAmount += deposits[i];
+  }
+  cout << "The sum of the deposits is: " << depositAmount << endl;
+  cout << endl;
+  
+  // take the acc balance from user
+  cout << "Please enter the prior balance amount ($##.##): ";
+  cin >> priorBalance;
+  cout << endl;
+  
+  customerBalance = priorBalance - (cashedAmount + unCashedAmount) + depositAmount;
+  bankBalance = priorBalance - cashedAmount + depositAmount;
+  
+  cout << "The new balance amount according to the account holder: "
+       << customerBalance << endl;
+  cout << "The balance according to the bank which includes only cleared "
+          "checks is: "
+       << bankBalance << endl;
+  cout << "The difference between the account holder's balance of "
+       << customerBalance << " and " << endl;
+  cout << "bank balance of " << bankBalance << " is: " << unCashedAmount << endl;
+  cout << endl;
+
+  sort(checks, checks + numOfChecks);
+  //print all checks
+  cout << "The cashed checks are: " << endl;
+  for(int i = 0; i < numOfChecks; ++i) {
+    if (checks[i].getIsCashed()) {
+      cout << checks[i] << endl;
+    }
+  }
+  cout << "\nThe uncashed checks are: " << endl;
+  for(int i = 0; i < numOfChecks; ++i) {
+    if (!(checks[i].getIsCashed())) {
+      cout << checks[i] << endl;
+    }
+  }
+
+  return 0;
+}
